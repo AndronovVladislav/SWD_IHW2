@@ -1,5 +1,7 @@
 package dependencies;
 
+import utils.Color;
+
 import java.util.LinkedList;
 import java.util.List;
 

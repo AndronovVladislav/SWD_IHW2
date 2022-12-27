@@ -1,5 +1,7 @@
 package dependencies;
 
+import utils.Color;
+
 public class Vertex {
     final private String filename;
     private Color color;

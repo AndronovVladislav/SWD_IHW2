@@ -1,7 +1,5 @@
 package dependencies;
 
-import dependencies.Vertex;
-
 public class Edge {
     Vertex source, destination;
 
