@@ -7,4 +7,8 @@ public class Edge {
         source = src;
         destination = dest;
     }
+
+    public Vertex getSource() {
+        return source;
+    }
 }

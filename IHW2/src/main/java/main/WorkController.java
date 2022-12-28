@@ -56,10 +56,27 @@ public class WorkController {
     void processCorrectRequest() throws IOException {
         List<Vertex> correctDependenciesList = dependenciesGraph.topologicalSorting();
 
+        System.out.println(Utilities.ANSI_GREEN + "Sorted list of files:" + Utilities.ANSI_RESET);
         for (var file : correctDependenciesList) {
-            System.out.println(file.getFilename().substring(mainFolder.length() + 1));
+            boolean independentFile = true;
+
+            for (var edge : dependenciesGraph.getEdges()) {
+                independentFile &= !edge.getSource().getFilename().equals(file.getFilename());
+            }
+
+            if (independentFile) {
+                System.out.println(Utilities.ANSI_BLUE +
+                        file.getFilename().substring(mainFolder.length() + 1) +
+                        Utilities.ANSI_RESET);
+            } else {
+                System.out.println(Utilities.ANSI_YELLOW +
+                        file.getFilename().substring(mainFolder.length() + 1) +
+                        Utilities.ANSI_RESET);
+            }
         }
 
+        System.out.println("\n" + Utilities.ANSI_GREEN +
+                           "Contents of files according to sorting:" + Utilities.ANSI_RESET);
         for (var file : correctDependenciesList) {
             filesProcessor.printFile(new File(file.getFilename()));
         }

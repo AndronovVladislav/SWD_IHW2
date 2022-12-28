@@ -19,7 +19,8 @@ public class FilesProcessor {
         String currentString;
         int firstVisibleSymbolPos;
 
-        dependenciesGraph.getVertices().add(new Vertex(file.getAbsolutePath()));
+        Vertex fileVertex = new Vertex(file.getAbsolutePath());
+        dependenciesGraph.getVertices().add(fileVertex);
 
         while ((currentString = reader.readLine()) != null) {
             firstVisibleSymbolPos = firstNonBlankSymbol(currentString);
@@ -35,7 +36,8 @@ public class FilesProcessor {
                 }
 
                 dependenciesGraph.getEdges()
-                                 .add(new Edge(new Vertex(file.getAbsolutePath()), new Vertex(checkRequestCorrectness.getAbsolutePath())));
+                                 .add(new Edge(fileVertex,
+                                      new Vertex(checkRequestCorrectness.getAbsolutePath())));
             }
         }
         return true;

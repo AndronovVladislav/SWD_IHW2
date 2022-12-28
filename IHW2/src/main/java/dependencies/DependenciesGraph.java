@@ -36,8 +36,8 @@ public class DependenciesGraph {
     public String topologicalSortingIsPossible() {
         String incorrectFile = "";
 
-        for (var vertex : vertices) {
-            incorrectFile = topologicalSortingIsPossibleHelp(vertex);
+        for (int i = 0; i < edges.size(); ++i) {
+            incorrectFile = topologicalSortingIsPossibleHelp(edges.get(i).source);
             if (!incorrectFile.equals("")) {
                 break;
             }
@@ -54,15 +54,38 @@ public class DependenciesGraph {
             return currentVertex.getFilename();
         } else {
             String incorrectFile = "";
-            currentVertex.setColor(Color.GRAY);
 
-            for (var edge : edges) {
-                if (currentVertex.getFilename().equals(edge.source.getFilename())) {
-                    incorrectFile = topologicalSortingIsPossibleHelp(edge.destination);
+            for (int i = 0; i < edges.size(); ++i) {
+                if (currentVertex.getFilename().equals(edges.get(i).source.getFilename())) {
+                    edges.get(i).source.setColor(Color.GRAY);
+                }
+
+                if (currentVertex.getFilename().equals(edges.get(i).destination.getFilename())) {
+                    edges.get(i).destination.setColor(Color.GRAY);
                 }
             }
 
-            currentVertex.setColor(Color.BLACK);
+            for (int i = 0; i < edges.size(); ++i) {
+                if (currentVertex.getFilename().equals(edges.get(i).source.getFilename())) {
+                    edges.get(i).source.setColor(Color.GRAY);
+                    incorrectFile = topologicalSortingIsPossibleHelp(edges.get(i).destination);
+
+                    if (!incorrectFile.equals("")) {
+                        return incorrectFile;
+                    }
+                }
+            }
+
+            for (int i = 0; i < edges.size(); ++i) {
+                if (currentVertex.getFilename().equals(edges.get(i).source.getFilename())) {
+                    edges.get(i).source.setColor(Color.BLACK);
+                }
+
+                if (currentVertex.getFilename().equals(edges.get(i).destination.getFilename())) {
+                    edges.get(i).destination.setColor(Color.WHITE);
+                }
+            }
+
             return incorrectFile;
         }
     }
