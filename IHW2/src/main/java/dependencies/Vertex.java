@@ -10,12 +10,15 @@ public class Vertex {
         filename = file;
         color = Color.WHITE;
     }
+
     public String getFilename() {
         return filename;
     }
+
     public void setColor(Color newColor) {
         color = newColor;
     }
+
     public Color getColor() {
         return color;
     }

@@ -17,9 +17,11 @@ public class DependenciesGraph {
     public List<Vertex> getVertices() {
         return vertices;
     }
+
     public List<Edge> getEdges() {
         return edges;
     }
+
     void printGraph() {
         for (var vertex : vertices) {
             System.out.println(vertex.getFilename());
@@ -32,15 +34,17 @@ public class DependenciesGraph {
     }
 
     public String topologicalSortingIsPossible() {
-        String sortingIsPossible = "";
+        String incorrectFile = "";
+
         for (var vertex : vertices) {
-            sortingIsPossible = topologicalSortingIsPossibleHelp(vertex);
-            if (!sortingIsPossible.equals("")) {
+            incorrectFile = topologicalSortingIsPossibleHelp(vertex);
+            if (!incorrectFile.equals("")) {
                 break;
             }
         }
+
         recolorInWhite();
-        return sortingIsPossible;
+        return incorrectFile;
     }
 
     String topologicalSortingIsPossibleHelp(Vertex currentVertex) {
@@ -49,17 +53,17 @@ public class DependenciesGraph {
         } else if (currentVertex.getColor() == Color.GRAY) {
             return currentVertex.getFilename();
         } else {
-            String ans = "";
+            String incorrectFile = "";
             currentVertex.setColor(Color.GRAY);
 
             for (var edge : edges) {
                 if (currentVertex.getFilename().equals(edge.source.getFilename())) {
-                    ans = topologicalSortingIsPossibleHelp(edge.destination);
+                    incorrectFile = topologicalSortingIsPossibleHelp(edge.destination);
                 }
             }
 
             currentVertex.setColor(Color.BLACK);
-            return ans;
+            return incorrectFile;
         }
     }
 

@@ -34,12 +34,13 @@ public class FilesProcessor {
                     return false;
                 }
 
-                dependenciesGraph.getEdges().add(new Edge(new Vertex(file.getAbsolutePath()),
-                                                     new Vertex(checkRequestCorrectness.getAbsolutePath())));
+                dependenciesGraph.getEdges()
+                                 .add(new Edge(new Vertex(file.getAbsolutePath()), new Vertex(checkRequestCorrectness.getAbsolutePath())));
             }
         }
         return true;
     }
+
     int firstNonBlankSymbol(String string) {
         for (int i = 0; i < string.length(); ++i) {
             if (string.charAt(i) != '\t' && string.charAt(i) != ' ') {

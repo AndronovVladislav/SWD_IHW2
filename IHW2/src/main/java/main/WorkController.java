@@ -16,6 +16,7 @@ public class WorkController {
     final FilesProcessor filesProcessor;
     final Database database;
     final DependenciesGraph dependenciesGraph;
+
     WorkController(String startDirectory) {
         mainFolder = startDirectory;
 
@@ -24,6 +25,7 @@ public class WorkController {
         filesProcessor = new FilesProcessor(mainFolder);
         dependenciesGraph = new DependenciesGraph();
     }
+
     void workLoop() throws IOException {
         database.fillDatabase();
 
@@ -36,15 +38,17 @@ public class WorkController {
         // filesProcessor.dependenciesGraph.printGraph();
         processDependencies();
     }
-    void processDependencies() throws IOException {
-        String resultOfCorrectnessTest = dependenciesGraph.topologicalSortingIsPossible();
 
-        if (resultOfCorrectnessTest.equals("")) {
+    void processDependencies() throws IOException {
+        String incorrectFile = dependenciesGraph.topologicalSortingIsPossible();
+
+        if (incorrectFile.equals("")) {
             processCorrectRequest();
         } else {
-            Errors.cyclicDependency(resultOfCorrectnessTest);
+            Errors.cyclicDependency(incorrectFile);
         }
     }
+
     boolean checkBeforeStart() {
         return Utilities.checkIsDirectory(database.getDirectories().iterator().next());
     }
