@@ -20,4 +20,8 @@ abstract public class Errors {
     public static void badStartDirectory() {
         System.out.println("Start path is invalid!");
     }
+
+    public static void resultFileProblem() {
+        System.out.println("Something went wrong with the results file!");
+    }
 }

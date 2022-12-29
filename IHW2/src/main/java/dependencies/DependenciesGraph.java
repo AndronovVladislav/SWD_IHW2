@@ -57,8 +57,7 @@ public class DependenciesGraph implements TopologicalSortable {
         List<Vertex> result = new LinkedList<>();
 
         for (int i = 0; i < vertices.size(); ++i) {
-            topologicalSortingHelp(vertices.get(i), result,
-                    new DependenciesGraph(vertices, edges));
+            topologicalSortingHelp(vertices.get(i), result, this);
         }
 
         recolorInWhite();

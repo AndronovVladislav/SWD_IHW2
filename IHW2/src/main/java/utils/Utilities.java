@@ -1,9 +1,9 @@
 package utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import dependencies.Vertex;
+
+import java.io.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -18,12 +18,30 @@ abstract public class Utilities {
         return Objects.nonNull(potentialDirectory) && potentialDirectory.isDirectory();
     }
 
-    public static void printFile(File file) throws IOException {
+    public static boolean makeResultFile(String rootFolder) throws IOException {
+        File resultFile = new File(rootFolder + "\\result_file.result");
+        return resultFile.createNewFile();
+    }
+
+    public static void fillResultFile(File file, List<Vertex> correctDependenciesList) throws IOException {
+        try (FileWriter resultFile = new FileWriter(file, false)) {
+            for (var vertex : correctDependenciesList) {
+                printFile(resultFile, new File(vertex.getFilename()));
+            }
+        }
+    }
+
+    static void printFile(FileWriter resultFile, File file) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String currentString;
 
         while ((currentString = reader.readLine()) != null) {
-            System.out.println(currentString);
+            resultFile.write(currentString + "\n");
         }
+    }
+
+    public static boolean resultFileNotExist(String rootFolder) {
+        File checkFile = new File(rootFolder + "\\result_file.result");
+        return !checkFile.isFile();
     }
 }

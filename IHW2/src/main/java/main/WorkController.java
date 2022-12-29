@@ -7,8 +7,7 @@ import dependencies.Vertex;
 import utils.Errors;
 import utils.Utilities;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 public class WorkController {
@@ -32,6 +31,7 @@ public class WorkController {
      * 1. Scans all directories in the root directory<br></br>
      * 2. Processes all found files: reads them and finds dependencies in their content<br></br>
      * 3. Runs the function that processes the found dependencies
+     *
      * @throws IOException <code>filesProcessor.findDependencies()</code> can throw this exception
      */
     void workLoop() throws IOException {
@@ -86,10 +86,14 @@ public class WorkController {
         }
 
         System.out.println("\n" + Utilities.ANSI_GREEN +
-                           "Contents of files according to sorting:" + Utilities.ANSI_RESET);
+                "Contents of files according to sorting wrote in " + mainFolder +
+                "\\result_file.result" + Utilities.ANSI_RESET);
 
-        for (var file : correctDependenciesList) {
-            Utilities.printFile(new File(file.getFilename()));
+        if (Utilities.resultFileNotExist(mainFolder) && Utilities.makeResultFile(mainFolder)) {
+            Utilities.fillResultFile(new File(mainFolder + "\\result_file.result"),
+                    correctDependenciesList);
+        } else {
+            Errors.resultFileProblem();
         }
     }
 }
