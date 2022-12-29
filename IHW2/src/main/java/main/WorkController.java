@@ -17,30 +17,36 @@ public class WorkController {
     final Database database;
     final DependenciesGraph dependenciesGraph;
 
-    WorkController(String startDirectory) {
+    public WorkController(String startDirectory) {
         mainFolder = startDirectory;
 
         database = new Database();
-        database.getDirectories().add(new File(mainFolder));
+        database.addDirectories(new File(mainFolder));
         filesProcessor = new FilesProcessor(mainFolder);
         dependenciesGraph = new DependenciesGraph();
     }
 
-    void workLoop() throws IOException {
+    /**
+     * The main method in the program:<br></br>
+     * 1. Scans all directories in the root directory<br></br>
+     * 2. Processes all found files: reads them and finds dependencies in their content<br></br>
+     * 3. Runs the function that processes the found dependencies
+     * @throws IOException <code>filesProcessor.findDependencies()</code> can throw this exception
+     */
+    public void workLoop() throws IOException {
         database.fillDatabase();
 
         for (var file : database.getFiles()) {
-            if (!filesProcessor.processFile(file, dependenciesGraph)) {
+            if (!filesProcessor.findDependencies(file, dependenciesGraph)) {
                 return;
             }
         }
 
-        // filesProcessor.dependenciesGraph.printGraph();
         processDependencies();
     }
 
-    void processDependencies() throws IOException {
-        String incorrectFile = dependenciesGraph.topologicalSortingIsPossible();
+    private void processDependencies() throws IOException {
+        String incorrectFile = dependenciesGraph.sortingIsPossible();
 
         if (incorrectFile.equals("")) {
             processCorrectRequest();
@@ -49,11 +55,15 @@ public class WorkController {
         }
     }
 
+    /**
+     * The method that test the root directory for correctness
+     * @return boolean
+     */
     boolean checkBeforeStart() {
         return Utilities.checkIsDirectory(database.getDirectories().iterator().next());
     }
 
-    void processCorrectRequest() throws IOException {
+    private void processCorrectRequest() throws IOException {
         List<Vertex> correctDependenciesList = dependenciesGraph.topologicalSorting();
 
         System.out.println(Utilities.ANSI_GREEN + "Sorted list of files:" + Utilities.ANSI_RESET);
@@ -77,8 +87,9 @@ public class WorkController {
 
         System.out.println("\n" + Utilities.ANSI_GREEN +
                            "Contents of files according to sorting:" + Utilities.ANSI_RESET);
+
         for (var file : correctDependenciesList) {
-            filesProcessor.printFile(new File(file.getFilename()));
+            Utilities.printFile(new File(file.getFilename()));
         }
     }
 }

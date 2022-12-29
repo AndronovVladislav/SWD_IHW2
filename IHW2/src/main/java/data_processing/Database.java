@@ -5,9 +5,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Database {
-    TreeSet<File> directories;
-    Set<File> files;
-    Set<File> usedDirectories;
+    private final TreeSet<File> directories;
+    private final Set<File> files;
+    private final Set<File> usedDirectories;
 
     public Database() {
         directories = new TreeSet<>();
@@ -23,9 +23,14 @@ public class Database {
         return files;
     }
 
+    public void addDirectories(File newDirectory) {
+        directories.add(newDirectory);
+    }
+
     public void fillDatabase() {
         while (usedDirectories.size() < directories.size()) {
             TreeSet<File> directories_copy = new TreeSet<>(directories);
+
             for (var directory :  directories_copy) {
                 if (usedDirectories.contains(directory)) {
                     continue;

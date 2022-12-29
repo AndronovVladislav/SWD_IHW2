@@ -14,7 +14,21 @@ public class FilesProcessor {
         rootDirectory = mainDirectory;
     }
 
-    public boolean processFile(File file, DependenciesGraph dependenciesGraph) throws IOException {
+    /**
+     * The method that processes a single file - reads the file,
+     * trying to find require-statement:<br></br>
+     * 1. First of all, adds vertex containing filename in the <code>vertices</code> of the
+     * <code>dependenciesGraph</code>. It is necessary for non-single connectivity components
+     * directory configurations<br></br>
+     * 2. If a dependency found, the method adds the dependent pair to the <code>edges</code> of
+     * the <code>dependenciesGraph</code><br></br>
+     *
+     * @param file file to processing
+     * @param dependenciesGraph dependencies graph to add dependencies to him
+     * @return <code>boolean</code>
+     * @throws IOException <code>reader.readLine()</code> can throw this exception
+     */
+    public boolean findDependencies(File file, DependenciesGraph dependenciesGraph) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String currentString;
         int firstVisibleSymbolPos;
@@ -23,10 +37,12 @@ public class FilesProcessor {
         dependenciesGraph.getVertices().add(fileVertex);
 
         while ((currentString = reader.readLine()) != null) {
+            // this variable(and corresponding method) necessary for the most flexible search of a require-statement
             firstVisibleSymbolPos = firstNonBlankSymbol(currentString);
 
+            // 7 - length of the word "require"
             if ("require".equals(currentString.substring(firstVisibleSymbolPos, firstVisibleSymbolPos + 7))) {
-
+                // extract name of required file and try to open it
                 String requiredFile = currentString.substring(firstVisibleSymbolPos + 9, currentString.length() - 1);
                 File checkRequestCorrectness = new File(rootDirectory + "\\" + requiredFile);
 
@@ -35,6 +51,7 @@ public class FilesProcessor {
                     return false;
                 }
 
+                // if file exists add dependent pair in dependenciesGraph
                 dependenciesGraph.getEdges()
                                  .add(new Edge(fileVertex,
                                       new Vertex(checkRequestCorrectness.getAbsolutePath())));
@@ -50,14 +67,5 @@ public class FilesProcessor {
             }
         }
         return string.length() - 1;
-    }
-
-    public void printFile(File file) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String currentString;
-
-        while ((currentString = reader.readLine()) != null) {
-            System.out.println(currentString);
-        }
     }
 }

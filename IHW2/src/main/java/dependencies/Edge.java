@@ -11,4 +11,8 @@ public class Edge {
     public Vertex getSource() {
         return source;
     }
+
+    public Vertex getDestination() {
+        return destination;
+    }
 }
