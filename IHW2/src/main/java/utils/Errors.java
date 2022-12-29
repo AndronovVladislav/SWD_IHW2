@@ -2,7 +2,7 @@ package utils;
 
 import java.io.File;
 
-public class Errors {
+abstract public class Errors {
     public static void cyclicDependency(String problemFile) {
         System.out.println("Cyclic dependency detected! Problem file: " + problemFile);
     }

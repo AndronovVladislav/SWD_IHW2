@@ -8,7 +8,7 @@ import utils.Errors;
 import java.io.*;
 
 public class FilesProcessor {
-    final String rootDirectory;
+    private final String rootDirectory;
 
     public FilesProcessor(String mainDirectory) {
         rootDirectory = mainDirectory;
@@ -25,7 +25,6 @@ public class FilesProcessor {
      *
      * @param file file to processing
      * @param dependenciesGraph dependencies graph to add dependencies to him
-     * @return <code>boolean</code>
      * @throws IOException <code>reader.readLine()</code> can throw this exception
      */
     public boolean findDependencies(File file, DependenciesGraph dependenciesGraph) throws IOException {

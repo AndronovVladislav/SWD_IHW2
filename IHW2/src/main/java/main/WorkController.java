@@ -12,16 +12,17 @@ import java.io.IOException;
 import java.util.List;
 
 public class WorkController {
-    final String mainFolder;
-    final FilesProcessor filesProcessor;
-    final Database database;
-    final DependenciesGraph dependenciesGraph;
+    private final String mainFolder;
+    private final FilesProcessor filesProcessor;
+    private final Database database;
+    private final DependenciesGraph dependenciesGraph;
 
-    public WorkController(String startDirectory) {
+    WorkController(String startDirectory) {
         mainFolder = startDirectory;
 
         database = new Database();
         database.addDirectories(new File(mainFolder));
+
         filesProcessor = new FilesProcessor(mainFolder);
         dependenciesGraph = new DependenciesGraph();
     }
@@ -33,7 +34,7 @@ public class WorkController {
      * 3. Runs the function that processes the found dependencies
      * @throws IOException <code>filesProcessor.findDependencies()</code> can throw this exception
      */
-    public void workLoop() throws IOException {
+    void workLoop() throws IOException {
         database.fillDatabase();
 
         for (var file : database.getFiles()) {
@@ -45,11 +46,11 @@ public class WorkController {
         processDependencies();
     }
 
-    private void processDependencies() throws IOException {
+    void processDependencies() throws IOException {
         String incorrectFile = dependenciesGraph.sortingIsPossible();
 
         if (incorrectFile.equals("")) {
-            processCorrectRequest();
+            processCorrectRequirements();
         } else {
             Errors.cyclicDependency(incorrectFile);
         }
@@ -57,13 +58,12 @@ public class WorkController {
 
     /**
      * The method that test the root directory for correctness
-     * @return boolean
      */
     boolean checkBeforeStart() {
         return Utilities.checkIsDirectory(database.getDirectories().iterator().next());
     }
 
-    private void processCorrectRequest() throws IOException {
+    void processCorrectRequirements() throws IOException {
         List<Vertex> correctDependenciesList = dependenciesGraph.topologicalSorting();
 
         System.out.println(Utilities.ANSI_GREEN + "Sorted list of files:" + Utilities.ANSI_RESET);

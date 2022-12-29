@@ -14,7 +14,7 @@ public class DependenciesGraph implements TopologicalSortable {
         edges = new LinkedList<>();
     }
 
-    DependenciesGraph(List<Vertex> originVertices, List<Edge> originEdges) {
+    private DependenciesGraph(List<Vertex> originVertices, List<Edge> originEdges) {
         vertices = originVertices;
         edges = originEdges;
     }
@@ -43,18 +43,9 @@ public class DependenciesGraph implements TopologicalSortable {
     }
 
     void recolorInWhite() {
-        // for (int i = 0; i < vertices.size(); i++) {
-        //     vertices.get(i).setColor(Color.WHITE);
-        // }
-
-        for (var vertex: vertices) {
+        for (var vertex : vertices) {
             vertex.setColor(Color.WHITE);
         }
-
-//        for (int i = 0; i < edges.size(); i++) {
-//            edges.get(i).getSource().setColor(Color.WHITE);
-//            edges.get(i).getDestination().setColor(Color.WHITE);
-//        }
 
         for (var edge : edges) {
             edge.getSource().setColor(Color.WHITE);
@@ -70,6 +61,7 @@ public class DependenciesGraph implements TopologicalSortable {
                     new DependenciesGraph(vertices, edges));
         }
 
+        recolorInWhite();
         return result;
     }
 }
