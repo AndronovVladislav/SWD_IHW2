@@ -1,0 +1,3 @@
+It is file A
+require 'Folder 1/File B'
+require 'Folder 2/File C'

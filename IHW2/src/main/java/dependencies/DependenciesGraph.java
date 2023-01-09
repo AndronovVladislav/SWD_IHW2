@@ -29,10 +29,10 @@ public class DependenciesGraph implements TopologicalSortable {
 
     public String sortingIsPossible() {
         String incorrectFile = "";
+        SortingHelper sortingHelper = new SortingHelper(new DependenciesGraph(vertices, edges));
 
         for (int i = 0; i < vertices.size(); ++i) {
-            incorrectFile = sortingIsPossibleHelp(vertices.get(i),
-                    new DependenciesGraph(vertices, edges));
+            incorrectFile = sortingHelper.sortingIsPossibleHelp(vertices.get(i));
             if (!incorrectFile.equals("")) {
                 break;
             }
@@ -55,9 +55,10 @@ public class DependenciesGraph implements TopologicalSortable {
 
     public List<Vertex> topologicalSorting() {
         List<Vertex> result = new LinkedList<>();
+        SortingHelper sortingHelper = new SortingHelper(new DependenciesGraph(vertices, edges));
 
         for (int i = 0; i < vertices.size(); ++i) {
-            topologicalSortingHelp(vertices.get(i), result, this);
+            sortingHelper.topologicalSortingHelp(vertices.get(i), result);
         }
 
         recolorInWhite();

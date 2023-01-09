@@ -1,7 +1,7 @@
 package main;
 
-import data_processing.Database;
-import data_processing.FilesProcessor;
+import data.processing.Database;
+import data.processing.FilesProcessor;
 import dependencies.DependenciesGraph;
 import dependencies.Vertex;
 import utils.Errors;
